@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/ilearnJava.iml" filepath="$PROJECT_DIR$/.idea/ilearnJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mystatic/mystatic.iml" filepath="$PROJECT_DIR$/mystatic/mystatic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oop/oop.iml" filepath="$PROJECT_DIR$/oop/oop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oopextends/oop-extends.iml" filepath="$PROJECT_DIR$/oopextends/oop-extends.iml" />
+    </modules>
+  </component>
+</project>
