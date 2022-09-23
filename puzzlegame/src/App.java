@@ -1,4 +1,4 @@
-package com.wzz.ui;
+import com.wzz.ui.GameJFrame;
 
 public class App {
     public static void main(String[] args) {
