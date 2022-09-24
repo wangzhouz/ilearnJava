@@ -1,11 +1,25 @@
 package com.wzz.test;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Test {
+public class Test2 {
     public static void main(String[] args) {
+        /*//1、创建一个游戏主界面
+        JFrame gameJframe = new JFrame();
+        gameJframe.setSize(603, 680);
+        gameJframe.setVisible(true);
+
+        //2、创件一个登录界面
+        JFrame loginJframe = new JFrame();
+        loginJframe.setSize(488, 430);
+        loginJframe.setVisible(true);
+
+        //3、创建一个注册界面
+        JFrame registerJframe = new JFrame();
+        registerJframe.setSize(488, 500);
+        registerJframe.setVisible(true);*/
+
         //1、定义一个一维数组
         int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
@@ -28,10 +42,14 @@ public class Test {
         int[][] data = new int[4][4];
 
         //5、给二维数组添加数据
-        //解法1：
-        //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中、
-        for (int i = 0; i < tempArr.length; i++) {
-            data[i / 4][i % 4] = tempArr[i];
+        //解法2：
+        //遍历二维数组，给里面的每一个数据赋值
+        int index = 0;
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                data[i][j] = tempArr[index];
+                index++;
+            }
         }
 
         //遍历二维数组

@@ -1,8 +1,23 @@
 package com.wzz.ui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Arrays;
+import java.util.Random;
 
-public class GameJFrame extends JFrame {
+public class GameJFrame extends JFrame implements KeyListener {
+    //创建一个二维数组
+    //目的：用来管理数据
+    //加载图片的时候，会根据二维数组中的数据进行加载
+    int[][] data = new int[4][4];
+
+    //记录空白方块在数组中的位置
+    int x = 0;
+    int y = 0;
+
+
     //游戏的主界面
     public GameJFrame() {
         //初始化界面
@@ -11,137 +26,88 @@ public class GameJFrame extends JFrame {
         //初始化菜单
         initJMenuBar();
 
-        //初始化图片
+        //初始化数据(打乱)
+        initData();
+
+        //初始化图片（根据打乱之后的结果加载图片）
         initImage();
 
         //让界面显示出来，建议写在最后
         this.setVisible(true);
     }
 
-    //初始化图片
-    private void initImage() {
-        int number = 1;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                //创建一个JLabel的对象（管理容器）
-                JLabel jLabel = new JLabel(new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\" + number + ".jpg"));
-                //指定图片位置
-                jLabel.setBounds(105 * j, 105 * i, 105, 105);
-                this.getContentPane().add(jLabel);
-                //添加一次之后number需要自增，表示下一次加载后一张图片
-                number++;
+
+    //初始化数据（打乱）
+    private void initData() {
+        //1、定义一个一维数组
+        int[] tempArr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+
+        //2、打乱数组中的数据的顺序
+        //遍历数组，得到每一个元素，拿着每一个元素跟随机索引上的数据进行交换
+        Random r = new Random();
+        for (int i = 0; i < tempArr.length; i++) {
+            //获取到随机索引
+            int index = r.nextInt(tempArr.length);
+            //拿着遍历到的每一个数据，跟随机索引上的数据进行交换
+            int temp = tempArr[i];
+            tempArr[i] = tempArr[index];
+            tempArr[index] = temp;
+        }
+
+        //4、创建一个二维数组
+//        int[][] data = new int[4][4];
+
+        //5、给二维数组添加数据
+        //解法1：
+        //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中、
+        for (int i = 0; i < tempArr.length; i++) {
+            if (tempArr[i] == 0) {
+                x = i / 4;
+                y = i % 4;
+            } else {
+                data[i / 4][i % 4] = tempArr[i];
             }
         }
 
-        //指定图片位置 - 第1列
-        /*//创建一个图片ImageIcon的对象
-        ImageIcon icon1 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\1.jpg");
+        //遍历二维数组
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+//                System.out.print(data[i][j] + ",");
+            }
+        }
+    }
 
-        //创建一个JLabel的对象（管理容器）
-        JLabel jLabel1 = new JLabel(icon1);
+    //初始化图片
+    //添加图片的时候，就需要按照二维数组中管理的数据添加图片
+    private void initImage() {
+        //清空原本已经出现的所有图片
+        this.getContentPane().removeAll();
 
-        //指定图片位置
-        jLabel1.setBounds(0, 0, 105, 105);
+        //细节：
+        //先加载的图片在上方，后加载的图片塞在下方。
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                //获取当前要加载图片的序号
+                int num = data[i][j];
+                //创建一个JLabel的对象（管理容器）
+                JLabel jLabel = new JLabel(new ImageIcon("puzzlegame\\image\\animal\\animal3\\" + num + ".jpg"));
+                //指定图片位置
+                jLabel.setBounds(105 * j + 83, 105 * i + 134, 105, 105);
+                //给图片添加边框
+                jLabel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+                this.getContentPane().add(jLabel);
+                //添加一次之后number需要自增，表示下一次加载后一张图片
 
-        ImageIcon icon2 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\2.jpg");
-        JLabel jLabel2 = new JLabel(icon2);
-        jLabel2.setBounds(105, 0, 105, 105);
+            }
+        }
+        //添加背景图片
+        JLabel background = new JLabel(new ImageIcon("puzzlegame\\image\\background.png"));
+        background.setBounds(40, 40, 508, 560);
+        //把背景图片添加到界面当中
+        this.getContentPane().add(background);
 
-        ImageIcon icon3 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\3.jpg");
-        JLabel jLabel3 = new JLabel(icon3);
-        jLabel3.setBounds(210, 0, 105, 105);
-
-        ImageIcon icon4 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\4.jpg");
-        JLabel jLabel4 = new JLabel(icon4);
-        jLabel4.setBounds(315, 0, 105, 105);*/
-        /*for (int i = 0; i < 4; i++) {
-            //创建一个JLabel的对象（管理容器）
-            JLabel jLabel = new JLabel(new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\1.jpg"));
-            //指定图片位置
-            jLabel.setBounds(105 * i, 0, 105, 105);
-            this.getContentPane().add(jLabel);
-        }*/
-
-        //指定图片位置 - 第2列
-        /*ImageIcon icon5 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\5.jpg");
-        JLabel jLabel5 = new JLabel(icon5);
-        jLabel5.setBounds(0, 105, 105, 105);
-        ImageIcon icon6 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\6.jpg");
-        JLabel jLabel6 = new JLabel(icon6);
-        jLabel6.setBounds(105, 105, 105, 105);
-        ImageIcon icon7 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\7.jpg");
-        JLabel jLabel7 = new JLabel(icon7);
-        jLabel7.setBounds(210, 105, 105, 105);
-        ImageIcon icon8 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\8.jpg");
-        JLabel jLabel8 = new JLabel(icon8);
-        jLabel8.setBounds(315, 105, 105, 105);*/
-        /*for (int i = 0; i < 4; i++) {
-            //创建一个JLabel的对象（管理容器）
-            JLabel jLabel = new JLabel(new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\1.jpg"));
-            //指定图片位置
-            jLabel.setBounds(105 * i, 105, 105, 105);
-            this.getContentPane().add(jLabel);
-        }*/
-
-        //指定图片位置 - 第3列
-        /*ImageIcon icon9 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\9.jpg");
-        JLabel jLabel9 = new JLabel(icon9);
-        jLabel9.setBounds(0, 210, 105, 105);
-        ImageIcon icon10 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\10.jpg");
-        JLabel jLabel10 = new JLabel(icon10);
-        jLabel10.setBounds(105, 210, 105, 105);
-        ImageIcon icon11 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\11.jpg");
-        JLabel jLabel11 = new JLabel(icon11);
-        jLabel11.setBounds(210, 210, 105, 105);
-        ImageIcon icon12 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\12.jpg");
-        JLabel jLabel12 = new JLabel(icon12);
-        jLabel12.setBounds(315, 210, 105, 105);*/
-        /*for (int i = 0; i < 4; i++) {
-            //创建一个JLabel的对象（管理容器）
-            JLabel jLabel = new JLabel(new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\1.jpg"));
-            //指定图片位置
-            jLabel.setBounds(105 * i, 210, 105, 105);
-            this.getContentPane().add(jLabel);
-        }*/
-
-        //指定图片位置 - 第4列
-        /*ImageIcon icon13 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\13.jpg");
-        JLabel jLabel13 = new JLabel(icon13);
-        jLabel13.setBounds(0, 315, 105, 105);
-        ImageIcon icon14 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\14.jpg");
-        JLabel jLabel14 = new JLabel(icon14);
-        jLabel14.setBounds(105, 315, 105, 105);
-//        ImageIcon icon15 = new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\15.jpg");
-//        JLabel jLabel15= new JLabel(icon15);
-//        jLabel15.setBounds(210,315,105,105);
-        JLabel jLabel15 = new JLabel(new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\15.jpg"));
-        jLabel15.setBounds(210, 315, 105, 105);*/
-        /*for (int i = 0; i < 4; i++) {
-            //创建一个JLabel的对象（管理容器）
-            JLabel jLabel = new JLabel(new ImageIcon("D:\\00_code\\learing\\ilearnJava\\puzzlegame\\image\\animal\\animal3\\1.jpg"));
-            //指定图片位置
-            jLabel.setBounds(105 * i, 315, 105, 105);
-            this.getContentPane().add(jLabel);
-        }*/
-
-
-        //把管理容器添加到界面中
-//        this.add(jLabel);
-        /*this.getContentPane().add(jLabel1);
-        this.getContentPane().add(jLabel2);
-        this.getContentPane().add(jLabel3);
-        this.getContentPane().add(jLabel4);
-        this.getContentPane().add(jLabel5);
-        this.getContentPane().add(jLabel6);
-        this.getContentPane().add(jLabel7);
-        this.getContentPane().add(jLabel8);
-        this.getContentPane().add(jLabel9);
-        this.getContentPane().add(jLabel10);
-        this.getContentPane().add(jLabel11);
-        this.getContentPane().add(jLabel12);
-        this.getContentPane().add(jLabel13);
-        this.getContentPane().add(jLabel14);
-        this.getContentPane().add(jLabel15);*/
+        //刷新一下界面
+        this.getContentPane().repaint();
 
     }
 
@@ -188,5 +154,82 @@ public class GameJFrame extends JFrame {
 
         //取消默认的居中放置，只有取消了才会按照XY轴的形式添加组件
         this.setLayout(null);
+
+        //给整个界面添加键盘监听事件
+        this.addKeyListener(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //对上，下，左，右进行判断
+        //左：37，上：38，右：39，下：40
+        int code = e.getKeyCode();
+        if (code == 37) {
+            System.out.println("向左移动");
+            if (y == 3) {
+                return;
+            }
+            //逻辑：
+            //把空白方块右方的数字往左移动
+            data[x][y] = data[x][y + 1];
+            data[x][y + 1] = 0;
+            y++;
+            //调用方法按照最新的数字加载图片
+            initImage();
+
+        } else if (code == 38) {
+            System.out.println("向上移动");
+            if (x == 3) {
+                return;
+            }
+            //逻辑：
+            //把空白方块下方的数字往上移动
+            //x,y表示空白方块
+            //x+1, y表示空白方块下方的数字
+
+            //把空白方块下方的数字赋值给空白方块
+            data[x][y] = data[x + 1][y];
+            data[x + 1][y] = 0;
+            x++;
+            //调用方法按照最新的数字加载图片
+            initImage();
+
+        } else if (code == 39) {
+            System.out.println("向右移动");
+            if (y == 0) {
+                return;
+            }
+            //逻辑：
+            //把空白方块左方的数字往右移动
+            data[x][y] = data[x][y - 1];
+            data[x][y - 1] = 0;
+            y--;
+            //调用方法按照最新的数字加载图片
+            initImage();
+
+        } else if (code == 40) {
+            System.out.println("向下移动");
+            if (x == 0) {
+                return;
+            }
+            //逻辑：
+            //把空白方块上方的数字往下移动
+            data[x][y] = data[x - 1][y];
+            data[x - 1][y] = 0;
+            x--;
+            //调用方法按照最新的数字加载图片
+            initImage();
+        }
+
     }
 }
