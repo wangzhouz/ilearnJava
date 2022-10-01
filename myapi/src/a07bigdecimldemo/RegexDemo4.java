@@ -2,9 +2,9 @@ package a07bigdecimldemo;
 
 public class RegexDemo4 {
     public static void main(String[] args) {
-       /*
-            需求
-            请编写正则表达式验证用户输入的手机号码是否满足要求。请编写正则表达式验证用户输入的邮箱号是否满足要求。请编写正则表达式验证用户输入的电话号码是否满足要求。
+       /*   需求
+            请编写正则表达式验证用户输入的手机号码是否满足要求。请编写正则表达式验证用户输入的邮箱号是否满足要求。
+            请编写正则表达式验证用户输入的电话号码是否满足要求。
             验证手机号码 13112345678 13712345667 13945679027 139456790271
             验证座机电话号码 020-2324242 02122442 027-42424 0712-3242434
             验证邮箱号码 3232323@qq.com zhangsan@itcast.cnn dlei0009@163.com dlei0009@pci.com.cn
@@ -58,11 +58,9 @@ public class RegexDemo4 {
         System.out.println("dlei0009@163.com".matches(regex3));
         System.out.println("dlei0009@pci.com.cn".matches(regex3));
 
-
-        //24小时的正则表达式
+        //24小时的正则表达式(采用any-rule插件写的)
         String regex4 = "([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d";
         System.out.println("23:11:11".matches(regex4));
-
         String regex5 = "([01]\\d 2[0-3])(:[0-5]\\d){2}";
         System.out.println("23:11:11".matches(regex5));
     }
