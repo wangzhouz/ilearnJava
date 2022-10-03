@@ -1,4 +1,4 @@
-package com.wzz.mycollection;
+package com.wzz.mycollection.a01mycollection;
 
 import java.util.ArrayList;
 import java.util.Collection;
